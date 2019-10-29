@@ -19,10 +19,16 @@
     var w = 700;
     var h = 500;
     var barPadding = 3;
+    
     var dataset = [
-        450, 100, 100, 279, 500, 25, 350, 120, 80, 130,
-        110, 102, 375, 200, 175, 168, 180, 230, 205, 303, 208
+        450, 100, 100, 600, 500, 25, 350, 120, 80, 130,
+        110, 102, 375, 200, 1075, 168, 180, 230, 205, 303, 208
     ];
+    
+    var scale = d3.scale.linear()
+                        .domain([0, d3.max(dataset)])
+                        .range([0, h]);
+    
     var colWidth = w / dataset.length;
     var barWidth = colWidth - barPadding;
     var svg = d3.select("#draw-here")
@@ -37,10 +43,10 @@
             return i * colWidth;
         })
         .attr("y", function(d) {
-            return h - d;
+            return h - scale(d);
         })
         .attr("height", function(d) {
-            return d;
+            return scale(d);
         })
         .attr("width", barWidth);
     svg.selectAll("text")
@@ -55,7 +61,7 @@
             return i * colWidth + barWidth / 2;
         })
         .attr("y", function(d) {
-            return h - d + 14;
+            return h - scale(d) + 10;
         })
         .attr("font-family", "sans-serif")
         .attr("font-size", "11px")
